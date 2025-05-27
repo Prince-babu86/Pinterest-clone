@@ -4,7 +4,9 @@ import App from './App.jsx'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import Wrapper from './Context/Wrapper.jsx'
+import { registerSW } from 'virtual:pwa-register';
 
+registerSW()
 createRoot(document.getElementById('root')).render(
   <>
   <Wrapper>

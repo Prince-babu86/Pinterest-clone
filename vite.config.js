@@ -1,21 +1,24 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from 'tailwindcss' // ✅ just import like this
 import { VitePWA } from 'vite-plugin-pwa'
 
-
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(),
+  plugins: [
+    react(),
     tailwindcss(),
-       VitePWA({
+    VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt'],
+      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'pinterest',
-        short_name: 'pinterest',
-        description: 'My awesome Vite + React PWA!',
+        name: 'Pinterest Clone',
+        short_name: 'Pinterest',
+        start_url: '/',
+        scope: '/',
+        display: 'standalone',
+        background_color: '#ffffff',
         theme_color: '#ffffff',
+        description: 'My awesome Vite + React PWA!',
         icons: [
           {
             src: '/LOGO.jpg',
@@ -27,11 +30,17 @@ export default defineConfig({
             sizes: '512x512',
             type: 'image/png',
           },
+          {
+            src: '/LOGO.jpg',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
         ],
       },
     }),
   ],
-   server: {
-    host: '0.0.0.0'
-  }
+  server: {
+    host: '0.0.0.0',
+  },
 })

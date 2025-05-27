@@ -23,6 +23,9 @@ const Create = () => {
     id: nanoid(),
     createdAt: new Date().toDateString(),
     comments: [],
+    isSaves:false,
+    isLike:false,
+    like:0
   });
 
   const [showImage, setshowImage] = useState("");

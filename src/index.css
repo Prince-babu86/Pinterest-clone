@@ -35,7 +35,7 @@
     margin: 0;
   }
   .pin-container {
-    column-width: 130px;
+    column-width: 140px;
     /* background: #000 */
     padding: 15px 0;
   }
@@ -80,12 +80,13 @@
     .create-pin-form{
         width: 100%;
         padding-bottom: 100px;
+        background-color: black;
     }
 
     .viewpin{
       width: 100%;
       margin-left:0 ;
-      padding: 5px 5px;
+      padding: 5px 0;
       border: none;
     }
 
@@ -158,7 +159,8 @@
 
   .pit-top-inner-mobile{
     gap: 5;
-    padding: 0 8px;
+    width: 100%;
+    padding: 0 2px;
     }
 
      .pin-top-item{

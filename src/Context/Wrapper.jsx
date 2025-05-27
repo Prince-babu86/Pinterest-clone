@@ -43,6 +43,19 @@ const Wrapper = (props) => {
   settheme(dta)
   },[theme , settheme])
 
+  const [savedPins, setsavedPins] = useState(()=>{
+    let saved = localStorage.getItem("SavedPins")
+    return saved ? JSON.parse(saved) : []
+   
+  })
+
+
+
+  useEffect(()=>{
+    localStorage.setItem("SavedPins" , JSON.stringify(savedPins))
+  },[savedPins])
+
+  // console.log(pinsData);
 
 
 
@@ -59,6 +72,8 @@ const Wrapper = (props) => {
         setNotificationCount,
         theme ,
         settheme,
+        setsavedPins,
+        savedPins
         
 
       }}

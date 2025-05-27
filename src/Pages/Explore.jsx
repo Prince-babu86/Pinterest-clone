@@ -9,6 +9,8 @@ const Explore = () => {
 
   const [isLoader, setisLoader] = useState(true);
 
+
+  // console.log(pinsdata);
   setTimeout(() => {
     setisLoader(false);
   }, 1500);
@@ -38,19 +40,19 @@ const Explore = () => {
           onClick={() => viewPin(pin.id)}
           className="pin-inner z-[120]  flex items-end flex-col justify-between bg-[#00000060] h-full w-full absolute rounded-2xl px-4 py-2 opacity-0 hover:opacity-100 ease-in-out duration-500"
         >
-          <button
+          <button disabled={pin.isSaved}
             onClick={(e) => {
               console.log(e.target);
             }}
-            className="bg-[#E60023] text-md py-3 z-[200] px-4 rounded-full cursor-pointer text-white"
+            className="bg-[#E60023] text-md py-3 z-[200] px-4 rounded-full cursor-pointer text-white disabled:bg-gray-500 disabled:cursor-not-allowed"
           >
-            Save
+           {pin.isSaved ? "Saved" : "Save"}
           </button>
           <div
             onClick={(e) => {
               shareHandler(pin.imageUrl);
             }}
-            className="h-10   w-10 bg-white text-black rounded-full flex items-center justify-center cursor-pointer"
+            className="h-10   w-10 bg-white text-black rounded-full flex items-center justify-center cursor-pointer "
           >
             <i className="ri-share-2-fill text-xl"></i>
           </div>

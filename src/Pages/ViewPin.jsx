@@ -12,6 +12,8 @@ const ViewPin = () => {
     setmessagesdata,
     NotificationCount,
     setNotificationCount,
+    setsavedPins,
+    savedPins,
   } = useContext(PinterstData);
 
   let { id } = useParams();
@@ -67,8 +69,7 @@ const ViewPin = () => {
     }, 1000);
   }, [viewPin]);
 
-
-    const shareHandler = (imageUrl) => {
+  const shareHandler = (imageUrl) => {
     const shareMessage = "Check this out!";
     const shareUrl = imageUrl ? imageUrl : data.imageUrl; // Replace with your actual URL
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(
@@ -102,7 +103,10 @@ const ViewPin = () => {
           <button className="bg-[#E60023] text-md py-3 px-4 rounded-full cursor-pointer text-white">
             Save
           </button>
-          <div onClick={()=>shareHandler(pin.imageUrl)} className="h-10  w-10 bg-white text-black rounded-full flex items-center justify-center cursor-pointer">
+          <div
+            onClick={() => shareHandler(pin.imageUrl)}
+            className="h-10  w-10 bg-white text-black rounded-full flex items-center justify-center cursor-pointer"
+          >
             <i className="ri-share-2-fill text-xl"></i>
           </div>
         </div>
@@ -120,8 +124,41 @@ const ViewPin = () => {
     }
   };
 
+  const savePinHandler = (id) => {
+    const updatedpins = pinsdata.map((pin) =>
+      pin.id === id ? { ...pin, isSaved: true } : pin
+    );
+    // console.log(updatedpins);
+    setpinsdata(updatedpins);
+
+    const savedpin = updatedpins.find((pin) => pin.id === id);
+
+    // console.log(savedpin);
+
+    setsavedPins((prev) => {
+      let updatepin = [...savedPins, savedpin];
+      return updatepin;
+    });
+  };
+
+  const likeHandler = (id) => {
+    let data = pinsdata.find((pin) => (pin.id == id ? pin : ""));
+
+    // console.log(data.isLike);
+
+    const updateLike = pinsdata.map((pin) =>
+      pin.id === id ? { ...pin, isLike: true, like: pin.like + 1 } : pin
+    );
+
+    const updateUnLike = pinsdata.map((pin) =>
+      pin.id === id ? { ...pin, isLike: false, like: pin.like - 1 } : pin
+    );
+
+    data.isLike ? setpinsdata(updateUnLike) : setpinsdata(updateLike);
+  };
+
   return (
-    <div className="flex relative flex-wrap  w-full ">
+    <div className="flex relative flex-wrap    w-full ">
       <i
         onClick={() => {
           window.scrollTo(0, 0);
@@ -129,27 +166,46 @@ const ViewPin = () => {
         }}
         className="view-pin-arr-left ri-arrow-left-line text-4xl cursor-pointer absolute top-1"
       ></i>
-      <div className="viewpin min-h-[600px]  w-[600px] ml-22 py-2 border-[#dbdbdb] border-2 rounded-2xl">
+      <div className="viewpin min-h-[600px]  w-[600px] ml-22 px-0 py-2 border-[#dbdbdb] border-2 rounded-2xl">
         <div className="pin h-full flex flex-col items-center justify-between">
           <div className="pin-top flex items-center w-full px-5 justify-between gap-5">
             <div className="flex gap-3">
               {" "}
               <div className="pin-top-item flex items-center p-2 gap-2 ">
-                <i className="ri-heart-2-line text-[28px]"></i>
-                <h4 className="text-xl font-semibold">10</h4>
+                <i
+                  onClick={() => likeHandler(data.id)}
+                  className={` cursor-pointer text-[28px] ${
+                    data.isLike
+                      ? "ri-heart-2-fill text-red-400"
+                      : "ri-heart-2-line"
+                  }`}
+                ></i>
+                <h4 className="text-xl font-semibold">{data.like}</h4>
               </div>
               <div className="pin-top-item flex items-center p-2 gap-2 ">
                 <i className="ri-chat-1-line text-[28px]"></i>
               </div>
-              <div onClick={()=>shareHandler(data.imageUrl)} className="pin-top-item cursor-pointer flex items-center p-2 gap-2 ">
+              <div
+                onClick={() => shareHandler(data.imageUrl)}
+                className="pin-top-item cursor-pointer flex items-center p-2 gap-2 "
+              >
                 <i className="ri-share-2-fill text-[28px]"></i>
               </div>
               <div className="pin-top-item flex items-center p-2 gap-2 ">
                 <i className="ri-more-line text-[28px]"></i>
               </div>
             </div>
-            <button className="py-3 px-5 bg-[#E60023] text-white rounded-full">
-              Save
+            <button
+              style={{}}
+              onClick={() => savePinHandler(data.id)}
+              disabled={data.isSaved}
+              className={`py-3 px-5 bg-[#E60023] text-white rounded-full ${
+                data.isSaved
+                  ? "disabled:bg-gray-500 disabled:cursor-not-allowed"
+                  : ""
+              }`}
+            >
+              {data.isSaved ? "Saved" : "Save"}{" "}
             </button>
           </div>
           <img
@@ -166,21 +222,35 @@ const ViewPin = () => {
             <div className="pit-top-inner-mobile flex gap-3">
               {" "}
               <div className="pin-top-item flex items-center p-2 gap-2 ">
-                <i className="ri-heart-2-line text-[28px]"></i>
-                <h4 className="text-xl font-semibold">10</h4>
+                <i
+                  onClick={() => likeHandler(data.id)}
+                  className={`${
+                    data.isLike
+                      ? "ri-heart-2-fill text-red-500"
+                      : "ri-heart-2-line"
+                  } text-[28px]`}
+                ></i>
+                <h4 className="text-xl font-semibold">{data.like}</h4>
               </div>
               <div className="pin-top-item flex items-center p-2 gap-2 ">
                 <i className="ri-chat-1-line text-[28px]"></i>
               </div>
-              <div onClick={()=>shareHandler(data.imageUrl)} className="pin-top-item cursor-pointer flex items-center p-2 gap-2 ">
+              <div
+                onClick={() => shareHandler(data.imageUrl)}
+                className="pin-top-item cursor-pointer flex items-center p-2 gap-2 "
+              >
                 <i className="ri-share-2-fill text-[28px]"></i>
               </div>
               <div className="pin-top-item flex items-center p-2 gap-2 ">
                 <i className="ri-more-line text-[28px]"></i>
               </div>
             </div>
-            <button className=" py-3 px-5 bg-[#E60023] text-white rounded-full">
-              Save
+            <button
+              onClick={() => savePinHandler(data.id)}
+              disabled={data.isSaved}
+              className=" py-3  bg-[#E60023] disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-full"
+            >
+              {data.isSaved ? "Saved" : "Save"}
             </button>
           </div>
           <div
@@ -217,7 +287,7 @@ const ViewPin = () => {
           </div>
         </div>
       </div>
-      
+
       {isLoader ? (
         <ExploreLoader />
       ) : (

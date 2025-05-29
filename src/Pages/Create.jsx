@@ -75,7 +75,7 @@ const Create = () => {
       return updated;
     });
 
-    // console.log(messagesdata);
+    console.log(pinsdata);
   };
 
   // console.log(NotificationCount);

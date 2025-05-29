@@ -7,7 +7,7 @@ export const PinterstData = createContext();
 const Wrapper = (props) => {
   const [pinsdata, setpinsdata] = useState(() => {
     const stored = localStorage.getItem("PinterestData");
-    return stored ? JSON.parse(stored) : pinsData;
+    return stored ? JSON.parse(stored) : pinsData
   });
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Wrapper = (props) => {
     localStorage.setItem("SavedPins" , JSON.stringify(savedPins))
   },[savedPins])
 
-  // console.log(pinsData);
+  console.log(pinsdata);
 
 
 

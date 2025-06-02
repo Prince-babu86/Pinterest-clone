@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { PinterstData } from "../Context/Wrapper";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   let { theme, settheme } = useContext(PinterstData);
@@ -16,14 +17,14 @@ const Navbar = () => {
           />
         </div>
 
-        <div className="profilelogos flex gap-2 items-center">
+        <Link to={`/login`} className="profilelogos flex gap-2 items-center">
           <img
             className="w-9 h-9 rounded-full object-cover object-top"
-            src="https://i.pinimg.com/736x/26/0e/93/260e93bee14246e467362cccc44437f9.jpg"
+            src="https://i.pinimg.com/736x/5d/7c/b9/5d7cb9e655b4d2ce194ae06735ace3cb.jpg"
             alt=""
           />
           <i className="ri-arrow-down-s-line text-3xl cursor-pointer"></i>
-        </div>
+        </Link>
       </div>
     </div>
   );

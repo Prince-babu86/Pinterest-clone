@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { pinsData } from "../Data/PinsArrayData";
 import axios from "axios";
+import { users } from "../Data/UsersData";
 
 export const PinterstData = createContext();
 
@@ -55,7 +56,28 @@ const Wrapper = (props) => {
     localStorage.setItem("SavedPins" , JSON.stringify(savedPins))
   },[savedPins])
 
-  console.log(pinsdata);
+
+
+  const [users, setusers] = useState(()=>{
+    const storedusers = localStorage.getItem("Users")
+    return storedusers ? JSON.parse(storedusers) : []
+    
+  })
+
+  useEffect(()=>{
+    localStorage.setItem("Users" , JSON.stringify(users))
+  },[users])
+
+  const [LogggedUser, setLogggedUser] = useState(()=>{
+    const storedUser = localStorage.getItem("LogedUser")
+    return storedUser ? JSON.parse(storedUser) : null
+    // return null
+  })
+
+
+  useEffect(()=>{
+    localStorage.setItem("LogedUser" , JSON.stringify(LogggedUser))
+  },[LogggedUser])
 
 
 
@@ -73,7 +95,10 @@ const Wrapper = (props) => {
         theme ,
         settheme,
         setsavedPins,
-        savedPins
+        savedPins,
+        LogggedUser, setLogggedUser,
+        users, setusers
+
         
 
       }}

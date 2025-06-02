@@ -12,7 +12,11 @@ const Create = () => {
     setmessagesdata,
     NotificationCount,
     setNotificationCount,
-    theme
+    theme,
+    LogggedUser,
+    setLogggedUser,
+    users,
+    setusers,
   } = useContext(PinterstData);
   let navigate = useNavigate();
 
@@ -23,9 +27,9 @@ const Create = () => {
     id: nanoid(),
     createdAt: new Date().toDateString(),
     comments: [],
-    isSaves:false,
-    isLike:false,
-    like:0
+    isSaves: false,
+    isLike: false,
+    like: 0,
   });
 
   const [showImage, setshowImage] = useState("");
@@ -43,51 +47,66 @@ const Create = () => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    // console.log(pin);
-    setisloader(true);
-    setTimeout(() => {
-      setpin({
-        tittle: "",
-        description: "",
-        imageUrl: "",
-      });
-      setisloader(false);
-      navigate(-1);
-      setNotificationCount(NotificationCount + 1);
-    }, 3000);
+
+    let { password, pins, ...newuser } = LogggedUser;
+    console.log(newuser);
+
+    let newpin = { ...pin, newuser };
+    console.log(newpin);
 
     setpinsdata((prev) => {
-      const updated = [...prev, pin];
-      // console.log(updated);
-      return updated;
+      let updatedPins = [...prev, newpin];
+      console.log(updatedPins);
+      return updatedPins;
     });
 
-    let NotifactionObj = {
-      tittle: `Created Post ${pin.tittle}`,
-      createdAt: pin.createdAt,
-      imageUrl: pin.imageUrl,
-      id: nanoid(),
-    };
-
-    setmessagesdata((prev) => {
-      const updated = [...prev, NotifactionObj];
-      // console.log(updated);
-      return updated;
+    // console.log(Array.isArray(LogggedUser.pins));
+    setLogggedUser((prev) => {
+      let exitingArray = Array.isArray(LogggedUser.pins) ? prev.pins : []; // finding array from Loggeduser
+      const newpins = Array.isArray(pin) ? pin : [pin]; // wrap pin in a array for update in loggeduserpins
+      const updateduser = { ...prev, pins: [...exitingArray, ...newpins] };
+      // console.log(updateduser);
+      return updateduser;
     });
 
-    console.log(pinsdata);
+    
   };
 
-  // console.log(NotificationCount);
+  
+
+  useEffect(() => {
+    let { userid } = LogggedUser;
+    let findUser = users.find((user) => userid === user.userid);
+
+    if (findUser) {
+      setusers((prev) => {
+        const updatedusers = prev.map((user) =>
+          userid === user.userid ? LogggedUser : user
+        );
+        console.log(updatedusers);
+        return updatedusers;
+      });
+    } else {
+      console.log("User not found");
+    }
+  }, [LogggedUser]);
 
   return (
-    <div className={`w-[90vw]  ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}  create-page`}>
-      <div className="w-full flex items-center py-5 border-t-1 border-b-1 text-2xl font-semibold">
+    <div
+      className={`w-[90vw] min-h-screen ${
+        theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+      }  create-page`}
+    >
+      <div className="w-full  flex items-center py-5 border-t-1 border-b-1 text-2xl font-semibold">
         Create Pin
       </div>
-      <div className="flex create-form w-full gap-12 px-16 mt-10 ">
+      <div className="flex create-form  w-full gap-12 px-16 mt-10 ">
         <div
-          className={`show-image w-[400px] rounded-2xl  h-[500px] border-dotted ${theme === "dark" ? "bg-[#212121] border-slate-200" : "bg-[#E9E9E9] border-slate-600"} relative border-2 flex items-center justify-center`}
+          className={`show-image w-[400px] rounded-2xl  h-[500px] border-dotted ${
+            theme === "dark"
+              ? "bg-[#212121] border-slate-200"
+              : "bg-[#E9E9E9] border-slate-600"
+          } relative border-2 flex items-center justify-center`}
         >
           {pin.imageUrl ? (
             <img
@@ -99,8 +118,14 @@ const Create = () => {
             ""
           )}
         </div>
-        <div className="form create-pin-form   w-[70%]">
-          <form onSubmit={handleOnSubmit} className="w-full " action="">
+        <div className={`form create-pin-form    w-[70%]`}>
+          <form
+            onSubmit={handleOnSubmit}
+            className={`w-full ${
+              theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+            }`}
+            action=""
+          >
             <div className="crt-item flex flex-col items-start mb-3 ">
               <h4 className="text-[12px] mb-1">Tittle</h4>
               <input

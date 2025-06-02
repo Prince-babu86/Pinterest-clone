@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { PinterstData } from "../Context/Wrapper";
 
 const MenuPhone = () => {
-  let { NotificationCount, setNotificationCount, theme, settheme } =
+  let { NotificationCount, setNotificationCount, theme, settheme ,  LogggedUser, setLogggedUser, } =
     useContext(PinterstData);
   let navigate = useNavigate();
   return (
@@ -63,12 +63,17 @@ const MenuPhone = () => {
       </div>
 
       <div className="phone-mn-item">
-        <NavLink
-          to={`/`}
+       {LogggedUser ?  <NavLink
+          to={`/profile`}
           className={(e) =>
-            e.isActive ? "ri-user-3-line text-2xl" : "ri-user-3-fill text-2xl"
+            e.isActive ? "ri-user-3-fill text-2xl" : "ri-user-3-line text-2xl"
           }
-        ></NavLink>
+        ></NavLink> :  <NavLink
+          to={`/login`}
+          className={(e) =>
+            e.isActive ? "ri-user-3-fill text-2xl" : "ri-user-3-line text-2xl"
+          }
+        ></NavLink>}
       </div>
     </div>
   );
